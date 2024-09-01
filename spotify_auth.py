@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 import time
 import threading
 import logging
-from filewatcher import Handler
-import watchdog.observers
-load_dotenv()
+from schedule_logic import Scheduler
 from spotipy.oauth2 import SpotifyOAuth
 from flask_app import FlaskApp
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -54,23 +54,28 @@ class SpotifyAuthManager:
         auth_url = self.sp_oauth.get_authorize_url()
         print(f"please log in to Spotify: {auth_url}") 
 
-        while self.flask_app_instance.authorization_code is None:
+        # Wait for the authorization code with a timeout
+        max_retries = 60  # e.g., 60 seconds timeout
+        retries = 0
+        while self.flask_app_instance.authorization_code is None and retries < max_retries:
             time.sleep(1)
+            retries +=1
 
+        if self.flask_app_instance.authorization_code is None:
+            logging.error("Failed to receive authorization code in time. Exiting...")
+            return  # Exit or handle the error appropriately
+    
         self.authorization_code = self.flask_app_instance.authorization_code
         logging.info("Authorization code received, initializing spotify client.... ")
-
         spotify_client = self.get_spotify_client(self.authorization_code)
 
-        bio_path = r"C:/Users/j/.vscode/match-spotify/playlist_gen"
-        event_handler = Handler(spotify_client)
-        observer = watchdog.observers.Observer()
-        observer.schedule(event_handler, path=bio_path, recursive=False)
-        observer.start()
+        scheduler = Scheduler(spotify_client)
+        scheduler.start()
 
         try:
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            observer.stop()
-        observer.join()
+            logging.info("Shutting down scheduler...")
+            scheduler.stop()  # Gracefully stop the scheduler
+            scheduler.join()  # Wait for the scheduler thread to finish
