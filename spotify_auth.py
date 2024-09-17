@@ -78,4 +78,3 @@ class SpotifyAuthManager:
         except KeyboardInterrupt:
             logging.info("Shutting down scheduler...")
             scheduler.stop()  # Gracefully stop the scheduler
-            scheduler.join()  # Wait for the scheduler thread to finish

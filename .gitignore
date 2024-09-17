@@ -1,3 +1,16 @@
+# ENV FOLDER
 .env
+
+# CACHE
 .cache
 __pycache__/
+
+# DATABASE FILEs
+db.py
+dbCodes.py
+my_sample.ini
+
+# IRRELEVANT FILES
+notes.txt
+plan_executor.py
+
