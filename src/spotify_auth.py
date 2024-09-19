@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import time
 import threading
 import logging
-from schedule_logic import Scheduler
 from spotipy.oauth2 import SpotifyOAuth
 from flask_app import FlaskApp
 
@@ -67,14 +66,4 @@ class SpotifyAuthManager:
     
         self.authorization_code = self.flask_app_instance.authorization_code
         logging.info("Authorization code received, initializing spotify client.... ")
-        spotify_client = self.get_spotify_client(self.authorization_code)
-
-        scheduler = Scheduler(spotify_client)
-        scheduler.start()
-
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            logging.info("Shutting down scheduler...")
-            scheduler.stop()  # Gracefully stop the scheduler
+        return self.get_spotify_client(self.authorization_code)

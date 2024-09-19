@@ -42,14 +42,14 @@ class Scheduler():
         '''
         Generates one playlist every morning at 10:00
         '''
-        bio_path = r"C:/Users/j/.vscode/match-spotify/playlist_gen/bio.txt"
+        bio_path = r"C:/Users/j/.vscode/match-spotify/playlist_gen/src/bio.txt"
         self.process_file(bio_path)
 
     def frequency_thrice(self):
         '''
         Generates three playlists a day: morning, afternoon, evening
         '''
-        bio_path = r"C:/Users/j/.vscode/match-spotify/playlist_gen/bio.txt"
+        bio_path = r"C:/Users/j/.vscode/match-spotify/playlist_gen/src/bio.txt"
         self.process_file(bio_path)
 
     def start(self):
@@ -58,11 +58,11 @@ class Scheduler():
         '''
         logging.info("Starting scheduler...")
         if self.frequency == 'one':
-            self.scheduler.add_job(self.base_plan, CronTrigger(hour=22, minute=45))
+            self.scheduler.add_job(self.frequency_once, CronTrigger(hour=10, minute=55))
         elif self.frequency == 'three':
-            self.scheduler.add_job(self.pro_plan, CronTrigger(hour=10, minute=0))
-            self.scheduler.add_job(self.pro_plan, CronTrigger(hour=14, minute=0))
-            self.scheduler.add_job(self.pro_plan, CronTrigger(hour=20, minute=0))
+            self.scheduler.add_job(self.frequency_thrice, CronTrigger(hour=10, minute=0))
+            self.scheduler.add_job(self.frequency_thrice, CronTrigger(hour=14, minute=0))
+            self.scheduler.add_job(self.frequency_thrice, CronTrigger(hour=20, minute=0))
         else:
             logging.error(f"Unknown frequency: {self.frequency}")
             return
