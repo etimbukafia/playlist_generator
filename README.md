@@ -10,5 +10,33 @@ Clone the respository:
 ```bash
 git clone https://github.com/yourusername/your-repo-name.git
 cd your-repo-name
+```
+
+Create a virtual environment and install dependencies:
+```bash
+python -m venv venv
+source venv/bin/activate  # For Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Create a .env file in the root directory and add your Spotify API credentials:
+```objectivec
+PLAYLIST-GENERATOR-CLIENT-ID=your_spotify_client_id
+PLAYLIST-GENERATOR-CLIENT_SECRET=your_spotify_client_secret
+```
+
+Set up Flask for Spotify OAuth:
+In the "spotify_auth.py" file, Flask is used to manage the OAuth process. Ensure that Flask runs correctly on "http://localhost:5000/callback".
+
+# Usage
+To start the application in Scheduler Mode, run:
+```bash
+python main.py --mode scheduler
+```
+
+To start the application in File Watcher Mode, run:
+```bash
+python main.py --mode file_watcher
+```
 
 
