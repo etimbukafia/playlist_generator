@@ -8,8 +8,8 @@ This is a Python-based application that interacts with the Spotify API to genera
 # Installation
 Clone the respository:
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/etimbukafia/playlist_generator.git
+cd playlist_generator
 ```
 
 Create a virtual environment and install dependencies:
